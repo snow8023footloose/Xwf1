@@ -1,0 +1,23 @@
+{
+  "element-ui": [
+    "2.3.3"
+  ],
+  "babel-helper-vue-jsx-merge-props": [
+    "2.0.3"
+  ],
+  "deepmerge": [
+    "1.5.2"
+  ],
+  "normalize-wheel": [
+    "1.0.1"
+  ],
+  "vue": [
+    "2.5.16"
+  ],
+  "async-validator": [
+    "1.8.2"
+  ],
+  "throttle-debounce": [
+    "1.0.1"
+  ]
+}
