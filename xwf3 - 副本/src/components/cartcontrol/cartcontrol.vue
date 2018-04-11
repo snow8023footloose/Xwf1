@@ -1,4 +1,5 @@
 <template>
+  <!--菜品添加-->
   <div class="cartcontrol">
     <transition name="move">
       <div class="cart-decrease icon-add_circle" v-show="food.count>0" @click.stop.prevent="decreaseCart">

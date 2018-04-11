@@ -6,7 +6,7 @@
       <el-tab-pane label="餐桌信息" name="first">
         <el-row :guter="0">
           <div class="table-container">
-            <transition name="el-zoom-in-left"  v-for="(item,index) in listTable">
+            <transition name="el-zoom-in-left"  v-for="(item,index) in listTable" :key="item.id">
               <div v-show="show2" class="transition-box"  @click="selectTable(item,index)">
                 <div class="box-header">
                   <span class="left" style="float: left;margin-left: 7px">桌号：{{index+1}}</span>

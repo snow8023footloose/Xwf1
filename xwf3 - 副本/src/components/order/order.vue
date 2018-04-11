@@ -26,6 +26,8 @@
       </div>
       <split></split>
       <ratingselect :select-type="selectType" :only-content="onlyContent" :ratings="ratings"></ratingselect>
+
+      <!--历史订单详情-->
       <div class="order-wrapper">
         <ul>
           <li v-for="(rating,key) in ratings" :key="key" v-show="needShow(rating.rateType, rating.text)" class="order-item">

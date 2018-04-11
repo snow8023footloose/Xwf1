@@ -6,6 +6,7 @@
     >
       <el-tab-pane label="收益统计概要" name="first">
 
+        <!--Schart 表格-->
         <schart :canvasId="canvasId"
                 :type="type"
                 :width="width"
@@ -14,6 +15,7 @@
                 :options="options"
                 class="schart1"
         ></schart>
+
         <span class="title1">今日总收入
           <span class="total">{{dailyTotal}}</span>元</span>
         <span class="title1">本月总收入

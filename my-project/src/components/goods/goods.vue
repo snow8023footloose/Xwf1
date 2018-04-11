@@ -4,6 +4,7 @@
         v-model="activeName"
         @tab-click="handleClick"
       >
+        <!--菜品模块-->
         <el-tab-pane label="菜品列表" name="first">
           <template>
           <!-- <span>{{msg}}</span> -->
@@ -79,6 +80,8 @@
             <editcontrol @plusMethods="plusMethodsThis"></editcontrol>
           </template>
         </el-tab-pane>
+
+        <!--特性模块-->
         <el-tab-pane label="特性管理" name="second">
 
           <!--标签-->
@@ -184,6 +187,7 @@
           </div>
 
         </el-tab-pane>
+
         <!--未开发功能-->
         <!--<el-tab-pane label="素材管理" name="third">-->
           <!--素材管理，正在建设中……-->

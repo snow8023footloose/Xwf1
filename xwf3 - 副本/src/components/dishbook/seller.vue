@@ -1,4 +1,5 @@
 <template>
+  <!--商家信息-->
   <div class="dishbook" ref="sc-dishbook">
     <div class="seller-content">
       <div class="overview">

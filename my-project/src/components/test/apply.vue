@@ -1,4 +1,5 @@
 <template>
+  <!--代码测试-->
   <div id="demo1">
     <schart :canvasId="canvasId"
             :type="type"
@@ -182,9 +183,7 @@
   //           </div>`
   // })
 
-  new Vue({
-    el: '#demo1'
-  })
+
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
 

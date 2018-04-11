@@ -20,11 +20,17 @@
           <li v-for="(item,key) in goods" :key="key" class="food-list food-list-hook">
             <h1 class="goods-title">{{item.name}}</h1>
             <ul>
-              <li ref="food-li" @click="selectFood(food,$event)" v-for="(food,key) in item.foods" :key="key" class="food-item border-1px">
+              <!--单个菜品信息遍历-->
+              <li
+                ref="food-li"
+                @click="selectFood(food,$event)"
+                v-for="(food,key) in item.foods"
+                :key="key"
+                class="food-item border-1px"
+              >
                 <div class="icon">
                   <img width="70px" height="70px" :src="food.icon">
                 </div>
-
                 <div class="goods-content">
                   <h2 class="goods-name">{{food.name}}</h2>
                   <p class="desc">{{food.description}}</p>
@@ -32,7 +38,8 @@
                     <span class="count">月售{{food.sellCount}}份</span><span>好评率{{food.rating}}%</span>
                   </div>
                   <div class="price">
-                    <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
+                    <span class="now">￥{{food.price}}</span>
+                    <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper" id="cartcontrol-wrapper">
                     <cartcontrol :food="food" @increment="incrementTotal"></cartcontrol>
@@ -43,9 +50,12 @@
           </li>
         </ul>
       </div>
-
-      <shopcart ref="shop-cart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
-
+      <shopcart
+        ref="shop-cart"
+        :select-foods="selectFoods"
+        :delivery-price="seller.deliveryPrice"
+        :min-price="seller.minPrice"
+      ></shopcart>
       <food :food="selectedFood" ref="food"></food>
     </div>
 </template>
@@ -98,8 +108,6 @@ export default {
     }
   },
   created () {
-
-    console.log("2")
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
     this.$axios.get('./api/goods').then((response) => {
       var response = response.data
@@ -111,7 +119,7 @@ export default {
         })
       }
     })
-    this.$axios.get('http://localhost:8080/api/seller').then((response1) => {
+    this.$axios.get('../api/seller').then((response1) => {
       var response1 = response1.data
       if (response1.errno === ERR_OK) {
         this.SColor = response1.data.sysColor[1].plan

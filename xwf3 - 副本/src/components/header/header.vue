@@ -97,7 +97,6 @@
                 </div>
               </div>
 
-
             </div>
           </div>
         </div>
@@ -136,9 +135,9 @@ export default {
   methods: {
     toggleFavorite() {
       //错误：收藏功能无效，暂停
-      // console.log("1")
-      // this.favorite = !this.favorite;
-      // saveToLocal(this.seller.id, 'favorite', this.favorite);
+      console.log("1")
+      this.favorite = !this.favorite;
+      saveToLocal(this.seller.id, 'favorite', this.favorite);
     },
     showDetail() {
       this.detailShow = true;

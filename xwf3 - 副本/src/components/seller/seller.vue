@@ -1,4 +1,5 @@
 <template>
+  <!--商家优惠券-->
   <div class="seller" ref="sc-seller">
     <div class="coupon-content">
       <div class="overview">
@@ -16,6 +17,8 @@
         </ul>
       </div>
       <split></split>
+
+      <!--底部更多活动展示-->
       <div class="pics">
         <h1 class="title">更多活动，敬请期待……</h1>
         <div class="pic-wrapper" ref="pic-wrapper">

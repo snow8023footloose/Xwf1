@@ -152,7 +152,7 @@ const ERR_OK = 0
       split
     },
     created () {
-      this.$axios.get('http://localhost:8080/api/seller').then((response) => {
+      this.$axios.get('../api/seller').then((response) => {
         var response = response.data
         if (response.errno === ERR_OK) {
           this.seller = response.data

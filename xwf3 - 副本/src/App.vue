@@ -23,12 +23,7 @@
       </router-link>-->
       <div class="service"></div>
     </div>
-    <!--<div class="hello">欢迎光临
-      <p class="firm">新沃丰网络科技有限公司提供技术支持</p>
-    </div>
-    <p class="t1">123123123123</p>-->
     <router-view :seller="seller"></router-view>
-
   </div>
 </template>
 
@@ -47,7 +42,7 @@ export default {
   mounted() {
   },
   created () {
-    this.$axios.get('http://localhost:8080/api/seller').then((response) => {
+    this.$axios.get('../api/seller').then((response) => {
       var response = response.data
       if (response.errno === ERR_OK) {
         this.seller = response.data

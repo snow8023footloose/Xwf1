@@ -16,14 +16,6 @@
             <el-button round @click="dialogFormVisibleTaw = true">外卖接口</el-button>
           </el-card>
         </el-tab-pane>
-
-
-        <!--<el-tab-pane label="新客户" name="second">-->
-        <!--</el-tab-pane>-->
-        <!--<el-tab-pane label="未完成客户" name="third">-->
-        <!--</el-tab-pane>-->
-        <!--<el-tab-pane label="所有客户" name="fourth">-->
-        <!--</el-tab-pane>-->
       </el-tabs>
       <el-dialog title="餐厅信息" :visible.sync="dialogFormVisibleMsg">
         <el-form :model="form">
@@ -286,7 +278,6 @@
 
   .el-dialog
     margin-top 20px !important
-
 
   .el-upload
     margin 0 auto

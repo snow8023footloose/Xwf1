@@ -4,6 +4,7 @@
         v-model="activeName"
         @tab-click="handleClick"
       >
+        <!--设置模块-->
         <el-tab-pane label="店铺设置" name="first">
           <el-form ref="form" :model="form" label-width="80px">
             <el-form-item label="店铺名称">
@@ -57,6 +58,8 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
+
+        <!--素材模块-->
         <el-tab-pane label="店铺素材" name="second">
           <div>
             <el-upload
