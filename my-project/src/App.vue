@@ -165,7 +165,7 @@ export default {
       loginstate: true,
       loginShow: false,
       owner:false,
-      manager:false,
+      manager:true,
       labelPosition: 'top',
       show2: true,
       footer: '新沃丰网络科技',
