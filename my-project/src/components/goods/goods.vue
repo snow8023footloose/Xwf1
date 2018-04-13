@@ -89,13 +89,13 @@
             <h6>请不要建立同名标签</h6>
             标签：
             <el-tag
-              :key="tag"
-              v-for="tag in dynamicTags"
+              :key="tag.sort"
+              v-for="(tag,key) in dynamicTags"
               closable
               :disable-transitions="false"
-              @close="handleClose(tag)"
+              @close="handleClose(key)"
             >
-              {{tag}}
+              {{tag.name}}
               <el-button
                 type="primary"
                 style="padding: 5px"
@@ -200,55 +200,37 @@
 
     <!--标签弹框-->
     <el-dialog width="80%" title="标签编辑" :visible.sync="dialogFormVisibleTagEdit">
-      <el-form :model="form">
+      <el-form :model="toDynamicTags">
         <el-form-item label="排序" :label-width="formLabelWidth">
-          <el-input v-model="form.content" auto-complete="off" placeholder="请输入数字"></el-input>
+          <el-input v-model="toDynamicTags.sort" auto-complete="off" placeholder="请输入数字"></el-input>
         </el-form-item>
       </el-form>
-      <el-form :model="form">
+      <el-form :model="toDynamicTags">
         <el-form-item label="标签类型" :label-width="formLabelWidth" style="text-align: left">
-          <el-select v-model="form.region" placeholder="请选择餐厅类型，默认标准">
-            <el-option label="信息标签" value="shanghai"></el-option>
-            <el-option label="价格标签" value="beijing"></el-option>
-            <el-option label="标准" value="beijing"></el-option>
+          <el-select v-model="toDynamicTags.type" placeholder="请选择餐厅类型，默认标准">
+            <el-option label="信息标签" value="msgTag"></el-option>
+            <el-option label="价格标签" value="priceTag"></el-option>
+            <el-option label="标准" value="kind"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
-      <el-form :model="form">
+      <el-form :model="toDynamicTags">
         <el-form-item class="price-form" label="价格" :label-width="formLabelWidth">
           <el-input
             size="small"
-            v-model="form.price"
+            v-model="toDynamicTags.price"
             auto-complete="off"
             placeholder="请输入价格"
             class="price-item"
           >
             <template slot="prepend">普通价</template>
           </el-input>
-          <el-input
-            size="small"
-            v-model="memberPrice"
-            auto-complete="off"
-            placeholder="请输入价格"
-            class="price-item"
-          >
-            <template slot="prepend">会员价{{memberDiscont}}</template>
-          </el-input>
-          <el-input
-            size="small"
-            v-model="PromotionPrice"
-            auto-complete="off"
-            placeholder="请输入价格"
-            class="price-item"
-          >
-            <template slot="prepend">活动价{{PromotionDiscont}}</template>
-          </el-input>
         </el-form-item>
 
         <el-form-item class="price-form" label="标签颜色" :label-width="formLabelWidth">
           <div class="block" style="display: flex; justify-content: space-around;">
-            <span>背景颜色：</span><el-color-picker v-model="colorFont"></el-color-picker>
-            <span>字体颜色：</span><el-color-picker v-model="colorBg"></el-color-picker>
+            <span>背景颜色：</span><el-color-picker v-model="toDynamicTags.fontColor"></el-color-picker>
+            <span>字体颜色：</span><el-color-picker v-model="toDynamicTags.bgColor"></el-color-picker>
           </div>
         </el-form-item>
       </el-form>
@@ -595,44 +577,58 @@ export default {
       person:'',
       number: 99
     },
-    dynamicTags: ['标签例子-店长推荐'],
+    toDynamicTags:[],
+    dynamicTags: [
+        {
+          sort:'1',
+          name:'标签例子-店长推荐',
+          price:'',
+          fontColor:'',
+          bgColor:'',
+          type:'',
+        },
+      ],
     inputVisible: false,
     inputValue: '',
     dynamicTags1: ['分类例子-拿手好菜'],
     inputVisible1: false,
     inputValue1: '',
-    dynamicTags2: ['SKU类例子-份量A'],
+    dynamicTags2: ['SKU类例子-份量'],
     inputVisible2: false,
     inputValue2: '',
     dynamicTags3: ['大份','小份'],
     inputVisible3: false,
     inputValue3: '',
-    options: [{
-      value: '选项1',
-      label: '黄金糕'
-    }, {
-      value: '选项2',
-      label: '双皮奶'
-    }, {
-      value: '选项3',
-      label: '蚵仔煎'
-    }, {
-      value: '选项4',
-      label: '龙须面'
-    }, {
-      value: '选项5',
-      label: '北京烤鸭'
-    }],
-    options1: [{
-      value: '选项1',
-      label: '默认端口1'
-    }, {
-      value: '选项2',
-      label: '端口2'
-    }, {
-      value: '选项3',
-      label: '端口3'
-    }],
+    options: [
+        {
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }
+    ],
+    options1: [
+          {
+        value: '选项1',
+        label: '默认端口1'
+      }, {
+        value: '选项2',
+        label: '端口2'
+      }, {
+        value: '选项3',
+        label: '端口3'
+      }
+    ],
     printValue:'选项1',
     value4: '',
     value5: '',
@@ -704,17 +700,35 @@ export default {
     },
     handleInputConfirm() {
       let inputValue = this.inputValue;
-      if (inputValue) {
-        this.dynamicTags.push(inputValue);
+
+      for(var i=0; i<this.dynamicTags.length; i++){
+        if(this.dynamicTags[i].name === inputValue){
+          inputValue += inputValue+'副本'
+        }
+      }
+
+
+      if (inputValue){
+        this.dynamicTags.push(
+          {
+            sort: '',
+            name: inputValue,
+            price:'',
+            fontColor:'',
+            bgColor:'',
+            type:'',
+          }
+        );
       }
       this.inputVisible = false;
       this.inputValue = '';
     },
     tagContent(tag){
-      console.log(tag);
+
+      this.toDynamicTags = tag
+      console.log(this.toDynamicTags);
       this.dialogFormVisibleTagEdit = !this.dialogFormVisibleTagEdit
     },
-
 
     showInput1() {
       this.inputVisible1 = true;
@@ -735,8 +749,6 @@ export default {
       this.dialogFormVisibleClassesEdit = !this.dialogFormVisibleClassesEdit
     },
 
-
-
     showInput2() {
       this.inputVisible2 = true;
       this.$nextTick(_ => {
@@ -755,7 +767,6 @@ export default {
       this.dialogFormVisibleSKUEdit = !this.dialogFormVisibleSKUEdit
       console.log(tag);
     },
-
 
     showInput3() {
       this.inputVisible3 = true;
@@ -776,15 +787,14 @@ export default {
       this.dialogFormVisibleInSKUEdit = !this.dialogFormVisibleInSKUEdit
     },
 
-
-
-    handleClose(tag) {
+    handleClose(key) {
       this.$confirm('是否删除该标签，与其的相关菜品标签将全部取消, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+        console.log(key);
+        this.dynamicTags.splice(this.dynamicTags.indexOf(key), 1);
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -802,7 +812,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.dynamicTags1.splice(this.dynamicTags1.indexOf(tag), 1);
+        this.dynamicTags1.splice(this.dynamicTags1.indexOf(tag.sort), 1);
         this.$message({
           type: 'success',
           message: '删除成功!'

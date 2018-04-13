@@ -30,7 +30,7 @@ export default new Router({
       component: Finance
     },
     {
-      path:'/XWFs/tables',
+      path:'/',
       name:'Tables',
       component:Tables
 

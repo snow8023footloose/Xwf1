@@ -54,31 +54,38 @@
       <el-button @click="show3=!show3" class="closeTable" icon="el-icon-close" circle></el-button>
     </div>
 
-    <!--table订单按钮-->
+    <!--table订单按钮：个人订单详请-->
     <div class="tableButtonGroup1" v-show="show3">
-      <span v-for="item in form.name">
-        <el-popover
-          placement="top"
-          title="个人账单详情"
-          width="200"
-          trigger="hover"
-          class="popover"
-        >
-          <p>个人账单</p>
-          <div style="text-align: right; margin: 0">
-            <el-button type="success" size="mini" @click="singleAccounts">结账</el-button>
-          </div>
+      <span class="singleContainer">
+        <span v-for="item in form.name">
+          <el-popover
+            placement="top"
+            title="个人账单详情"
+            width="200"
+            trigger="hover"
+            class="popover"
+          >
+            <p>个人账单</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="minusCustomer">删除</el-button>
+              <el-button type="success" size="mini" @click="singleAccounts">结账</el-button>
+            </div>
 
-          <el-button class="singleButton" slot="reference" @click="selectCustom(item,$event)" type="primary" size="small" icon="el-icon-document" round>{{item}}</el-button>
-        </el-popover>
-        <el-badge :value="1" class="item">
-        </el-badge>
+            <el-button class="singleButton" slot="reference" @click="selectCustomer(item,$event)" type="primary" size="small" icon="el-icon-document" round>{{item}}</el-button>
+          </el-popover>
+          <el-badge :value="1" class="item">
+          </el-badge>
+        </span>
       </span>
 
-      <el-button @click="plusCustomer" icon="el-icon-plus" circle></el-button>
+      <el-button
+        @click="plusCustomer"
+        icon="el-icon-plus"
+        circle
+      ></el-button>
     </div>
 
-    <!--table弹框-->
+    <!--table弹框：整个餐桌详细信息，餐桌点餐，餐桌订单详情-->
     <transition enter-active-class="bounceInUp" leave-active-class="bounceOutDown">
       <div class="goodse animated" id="goods" ref="goods-top" v-show="show3">
         <el-popover
@@ -243,6 +250,7 @@ export default {
   name: 'tables',
   data: () => ({
     show3: false,
+    inputCustomer:'',
     input5: '',
     fullscreenLoading: false,
     tableSearchSelect1: '',
@@ -264,6 +272,7 @@ export default {
     currentDate: new Date(),
     formLabelWidth:'80px',
     tableTitle:"",
+    toCustomer:'',
     visible2: false,
     toAccountBox: [],
     form: {
@@ -360,8 +369,29 @@ export default {
         });
       }, 2000);
     },
+    minusCustomer(){
+      let numberOfpeople = this.form.name;
+      if (numberOfpeople) {
+        numberOfpeople--;
+        this.form.name = numberOfpeople
+        // this.toCustomer.push(numberOfpeople);
+      }
+    },
     plusCustomer(){
-
+      let numberOfpeople = this.form.name;
+      console.log(numberOfpeople);
+      if (numberOfpeople) {
+        numberOfpeople++;
+        this.form.name = numberOfpeople
+        // this.toCustomer.push(numberOfpeople);
+      }else if(numberOfpeople === 0){
+        numberOfpeople++;
+        this.form.name = numberOfpeople
+      }
+      // this.numberOfpeople = false;
+      // this.toCustomer = '';
+      // console.log(this.form.name);
+      // console.log(this.form);
     },
     refreshTable(){
       const loading = this.$loading({
@@ -386,7 +416,7 @@ export default {
     singleAccounts(){
       alert("结账中……")
     },
-    selectCustom(item,event){
+    selectCustomer(item,event){
       // console.log(item);
       // console.log(event);
       var toggle = event.currentTarget; //通过event获取该元素
@@ -507,6 +537,8 @@ export default {
       // console.log(item);
 
       this.toAccountBox = item;
+
+      // form赋值处
       // console.log(this.toAccountBox);console.log("this.toAccountBox");
       this.form.name = item.score
       this.form.type = item.recommend
@@ -695,19 +727,29 @@ export default {
 
   .tableButtonGroup1
     position: fixed
-    left: 23%
-    bottom: 35px
-    width auto
+    left: 12%
+    bottom: 20px
+    width 641px
+    height 65px
     z-index 100
-    span
-      .popover
-        .singleButton
-          margin-left 0px
-          padding 10px
-          &:hover
-            box-shadow 1px 2px 3px rgba(0,0,0,0.3)
+    overflow-x scroll
+    .singleContainer
+      height 40px
+      width 2000px
+      display inline-block
+      span
+        .popover
+          .singleButton
+            margin-left 0px
+            padding 10px
+            margin-top 10px
+            &:hover
+              box-shadow 1px 2px 3px rgba(0,0,0,0.3)
     >button
       margin-left 2px
+      position fixed
+      right 17%
+      bottom: 35px
 
 
   .el-badge

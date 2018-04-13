@@ -86,7 +86,7 @@
           class="el-menu-vertical-demo"
           @open="handleOpen"
           @close="handleClose">
-          <router-link :to="{path:'/XWFs/tables'}" class="vlink">
+          <router-link :to="{path:'/'}" class="vlink">
             <el-menu-item index="1">
               <i class="el-icon-document"></i>
               <span slot="title" class="title">餐桌收银</span>

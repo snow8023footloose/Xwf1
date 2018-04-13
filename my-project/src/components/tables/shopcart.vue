@@ -10,12 +10,15 @@
         </div>
         <div class="price" v-show="totalCount>0" :class="{'highlight':totalPrice>0}">￥{{totalPrice}}</div>
         <div class="desc" v-show="totalCount===0">亲，购物车为空</div>
-        <el-select v-model="value8" filterable placeholder="点击搜索" class="search">
+        <el-select size="small" multiple collapse-tags v-model="value8" filterable placeholder="点击搜索" class="search">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="(item,index) in listGoods"
+            :key="index"
+            :label="item.name"
+            :value="item.price">
+            <span style="">{{ item.name }}&nbsp;&nbsp;价格：</span>
+            <span style=" color: #8492a6; font-size: 13px">{{ item.price }}元</span>
+
           </el-option>
         </el-select>
         <!-- <div class="desc" v-show="totalCount>0">另需餐桌费￥{{deliveryPrice}}元</div> -->
@@ -118,20 +121,21 @@ const ERR_OK = 0
         SColor:'SColor',
         SColor2:'SColor2',
         SColor4:'SColor4',
+        goods1:[],
         options: [{
-          value: '选项1',
+          value: '价格1',
           label: '黄金糕'
         }, {
-          value: '选项2',
+          value: '价格2',
           label: '双皮奶'
         }, {
-          value: '选项3',
+          value: '价格3',
           label: '蚵仔煎'
         }, {
-          value: '选项4',
+          value: '价格4',
           label: '龙须面'
         }, {
-          value: '选项5',
+          value: '价格5',
           label: '北京烤鸭'
         }],
         value8: ''
@@ -198,6 +202,7 @@ const ERR_OK = 0
         this.selectFoods.forEach((food) => {
           food.count = 0;
         });
+        console.log(this.listGoods);
       },
       pay() {
         if (this.totalPrice < this.minPrice) {
@@ -256,8 +261,19 @@ const ERR_OK = 0
           });
         }
         return show;
+      },
+      listGoods(){
+        let tempArr = [];
+        this.goods1.forEach((item)=>{
+          tempArr = tempArr.concat(item.foods);
+        })
+        return tempArr;
       }
     },
+    mounted(){
+      console.log(this.listGoods);
+    },
+
     created () {
       this.$axios.get('../api/seller').then((response) => {
         var response = response.data
@@ -265,6 +281,15 @@ const ERR_OK = 0
           this.seller = response.data
         }
       });
+      this.$axios.get('../api/goods').then((res) => {
+        var res = res.data
+        if (res.errno === ERR_OK) {
+          this.goods1 = res.data
+          console.log(this.goods1);
+          console.log("shopcart");
+
+        }
+      })
     },
     components: {
       cartcontrol
@@ -450,6 +475,6 @@ const ERR_OK = 0
 
 .search
   position absolute
-  bottom 5px
+  bottom 10px
   left 35%
 </style>
