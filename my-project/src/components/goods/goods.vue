@@ -82,7 +82,7 @@
         </el-tab-pane>
 
         <!--特性模块-->
-        <el-tab-pane label="特性管理" name="second">
+        <el-tab-pane label="特性管理" name="third">
 
           <!--标签-->
           <div class="tagGroup">
@@ -187,7 +187,6 @@
           </div>
 
         </el-tab-pane>
-
         <!--未开发功能-->
         <!--<el-tab-pane label="素材管理" name="third">-->
           <!--素材管理，正在建设中……-->
@@ -254,59 +253,38 @@
     </el-dialog>
 
     <!--分类弹框-->
-    <el-dialog width="80%" title="分类编辑" :visible.sync="dialogFormVisibleClassesEdit">
-      <el-form :model="toDynamicTags1">
-        <el-form-item label="排序" :label-width="formLabelWidth">
+    <el-dialog top="5vh" width="80%" title="分类编辑" :visible.sync="dialogFormVisibleClassesEdit">
+      <el-form :model="toDynamicTags1" :rules="rules1" ref="toDynamicTags1">
+        <el-form-item label="排序" :label-width="formLabelWidth" prop="zIndex">
           <el-input v-model="toDynamicTags1.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
         </el-form-item>
-      </el-form>
-      <el-form :model="toDynamicTags1">
-        <el-form-item label="分类类型" :label-width="formLabelWidth" style="text-align: left">
-          <el-select v-model="toDynamicTags1.type" placeholder="请选择餐厅类型，默认标准">
-            <el-option label="信息标签" value="shanghai"></el-option>
-            <el-option label="价格标签" value="beijing"></el-option>
-            <el-option label="标准" value="beijing"></el-option>
+        <el-form-item label="分类介绍" :label-width="formLabelWidth">
+          <el-input v-model="toDynamicTags1.description" auto-complete="off" placeholder="请输入数字"></el-input>
+        </el-form-item>
+        <el-form-item label="展示类型" :label-width="formLabelWidth" style="text-align: left">
+          <el-select v-model="toDynamicTags1.type" placeholder="请选择分类展示类型">
+            <el-option label="始终展示" value="always"></el-option>
+            <el-option label="始终不展示" value="invisible"></el-option>
+            <el-option label="有时展示" value="sometimes"></el-option>
           </el-select>
         </el-form-item>
-      </el-form>
-      <el-form :model="toDynamicTags1">
-        <el-form-item class="price-form" label="价格" :label-width="formLabelWidth">
-          <el-input
-            size="small"
-            v-model="toDynamicTags1.price"
-            auto-complete="off"
-            placeholder="请输入价格"
-            class="price-item"
-          >
-            <template slot="prepend">普通价</template>
-          </el-input>
-          <el-input
-            size="small"
-            v-model="memberPrice"
-            auto-complete="off"
-            placeholder="请输入价格"
-            class="price-item"
-          >
-            <template slot="prepend">会员价{{memberDiscont}}</template>
-          </el-input>
-          <el-input
-            size="small"
-            v-model="PromotionPrice"
-            auto-complete="off"
-            placeholder="请输入价格"
-            class="price-item"
-          >
-            <template slot="prepend">活动价{{PromotionDiscont}}</template>
-          </el-input>
+        <el-form-item label="打印机" :label-width="formLabelWidth" style="text-align: left">
+          <el-select v-model="toDynamicTags1.pid" placeholder="打印机1">
+            <el-option label="打印机1" value="printer1"></el-option>
+            <el-option label="打印机2" value="printer2"></el-option>
+            <el-option label="打印机3" value="printer3"></el-option>
+          </el-select>
         </el-form-item>
-
-        <el-form-item class="price-form" label="分类颜色" :label-width="formLabelWidth">
-          <div class="block" style="display: flex; justify-content: space-around;">
-            <span>背景颜色：</span><el-color-picker v-model="colorFont"></el-color-picker>
-            <span>字体颜色：</span><el-color-picker v-model="colorBg"></el-color-picker>
-          </div>
+        <el-form-item label="餐厅id" :label-width="formLabelWidth" prop="rid">
+          <el-input v-model="toDynamicTags1.rid" auto-complete="off" placeholder="请输入数字"></el-input>
         </el-form-item>
-        <el-form-item style="width: 30%" label="缩略图" :label-width="formLabelWidth">
+        <el-form-item label="状态" :label-width="formLabelWidth" style="text-align: left">
+          <el-select v-model="toDynamicTags1.status" placeholder="可用">
+            <el-option label="可用" value="enable"></el-option>
+            <el-option label="不可用" value="disable"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item style="width: 40%" label="缩略图" :label-width="formLabelWidth">
           <el-upload
             class="upload-demo"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -318,12 +296,13 @@
             <div slot="tip" class="el-upload__tip">只能上传png/jpg/gif文件</div>
           </el-upload>
         </el-form-item>
+        <el-form-item>
+            <el-button @click="dialogFormVisibleClassesEdit = false">取 消</el-button>
+            <el-button type="primary" @click="submitForm1(toDynamicTags1)">确 定</el-button>
+            <el-button type="primary" circle @click="resetForm1('toDynamicTags1')" class="el-icon-refresh"></el-button>
+        </el-form-item>
       </el-form>
 
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleClassesEdit = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleClassesEdit = false">确 定</el-button>
-      </div>
     </el-dialog>
 
     <!--SKU弹框-->
@@ -626,10 +605,11 @@ export default {
       {
         zIndex:'0',
         name:'其他',
-        price:'',
-        fontColor:'',
-        bgColor:'',
         type:'',
+        pid: '',
+        rid: 0,
+        description: '',
+        status: '',
         fileList: [
           {
             name: 'food.jpeg',
@@ -638,6 +618,17 @@ export default {
         ]
       },
     ],
+    rules1: {
+      zIndex : [
+        {required: true, message:'请输入序号', trigger:'blur'},
+      ],
+      rid : [
+        {required: true, message: '不能为空', trigger: 'blur'},
+        {type: 'number', required: true, message: '请输入数字', trigger: 'blur'},
+        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            ],
+
+    },
     inputVisible1: false,
     inputValue1: '',
     toDynamicTags2:[],
@@ -763,6 +754,22 @@ export default {
     }
   },
   methods: {
+
+    submitForm1() {
+      // console.log(formName);
+      // console.log(formName); //rulesForm
+      this.$refs['toDynamicTags1'].validate((valid) => {
+        if (valid) {
+          alert('提交成功');
+        } else {
+          alert('内容没有填写完整');
+          return false;
+        }
+      });
+    },
+    resetForm1(formName) {
+      this.$refs[formName].resetFields();
+    },
     handleRemove(file, fileList) {
       // console.log(file, fileList);
     },
@@ -913,6 +920,7 @@ export default {
     tagContent1(tag){
       // console.log(tag);
       this.toDynamicTags1 = tag
+      console.log(this.toDynamicTags1);
       this.dialogFormVisibleClassesEdit = !this.dialogFormVisibleClassesEdit
     },
     handleClose1(tag) {
