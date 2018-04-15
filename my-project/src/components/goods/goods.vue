@@ -82,7 +82,7 @@
         </el-tab-pane>
 
         <!--特性模块-->
-        <el-tab-pane label="特性管理" name="third">
+        <el-tab-pane label="特性管理" name="second">
 
           <!--标签-->
           <div class="tagGroup">
@@ -188,9 +188,6 @@
 
         </el-tab-pane>
         <!--未开发功能-->
-        <!--<el-tab-pane label="素材管理" name="third">-->
-          <!--素材管理，正在建设中……-->
-        <!--</el-tab-pane>-->
         <!--<el-tab-pane label="菜品统计" name="fourth">-->
           <!--菜品统计，正在建设中……-->
         <!--</el-tab-pane>-->
@@ -198,22 +195,23 @@
       </el-tabs>
 
     <!--标签弹框-->
-    <el-dialog width="80%" title="标签编辑" :visible.sync="dialogFormVisibleTagEdit">
-      <el-form :model="toDynamicTags">
-        <el-form-item label="排序" :label-width="formLabelWidth">
-          <el-input v-model="toDynamicTags.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
+    <el-dialog width="80%" title="标签编辑" :visible.sync="dialogFormVisibleTagEdit" ref="showTags">
+      <el-form status-icon :model="toDynamicTags" :rules="rules" ref="DynamicTags">
+        <el-form-item label="排序" :label-width="formLabelWidth" prop="zIndex">
+          <el-input v-model.number="toDynamicTags.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
         </el-form-item>
-      </el-form>
-      <el-form :model="toDynamicTags">
-        <el-form-item label="标签类型" :label-width="formLabelWidth" style="text-align: left">
-          <el-select v-model="toDynamicTags.type" placeholder="请选择餐厅类型，默认标准">
-            <el-option label="信息标签" value="msgTag"></el-option>
-            <el-option label="价格标签" value="priceTag"></el-option>
-            <el-option label="标准" value="kind"></el-option>
+        <el-form-item label="状态" :label-width="formLabelWidth" style="text-align: left">
+          <el-select v-model="toDynamicTags.status" placeholder="可用">
+            <el-option label="可用" value="enable"></el-option>
+            <el-option label="不可用" value="disable"></el-option>
           </el-select>
         </el-form-item>
-      </el-form>
-      <el-form :model="toDynamicTags">
+        <el-form-item label="标签类型" :label-width="formLabelWidth" style="text-align: left">
+          <el-select v-model="toDynamicTags.type" placeholder="免费标签">
+            <el-option label="免费标签" value="freeTag"></el-option>
+            <el-option label="价格标签" value="priceTag"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item class="price-form" label="价格" :label-width="formLabelWidth">
           <el-input
             size="small"
@@ -225,38 +223,24 @@
             <template slot="prepend">普通价</template>
           </el-input>
         </el-form-item>
-
-        <el-form-item class="price-form" label="标签颜色" :label-width="formLabelWidth">
-          <div class="block" style="display: flex; justify-content: space-around;">
-            <span>背景颜色：</span><el-color-picker v-model="toDynamicTags.fontColor"></el-color-picker>
-            <span>字体颜色：</span><el-color-picker v-model="toDynamicTags.bgColor"></el-color-picker>
-          </div>
-        </el-form-item>
-        <el-form-item style="width: 50%" label="缩略图" :label-width="formLabelWidth">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="toDynamicTags.fileList"
-            list-type="picture">
-            <el-button size="small" type="primary">点击上传 </el-button>
-            <div slot="tip" class="el-upload__tip">只能上传png/jpg/gif文件</div>
-          </el-upload>
+        <el-form-item style="display: flex;justify-content: flex-end;">
+          <el-button @click="dialogFormVisibleTagEdit = false">取 消</el-button>
+          <el-button type="primary" @click="submitForm('DynamicTags','showTags')">确 定</el-button>
         </el-form-item>
       </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleTagEdit = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleTagEdit = false">确 定</el-button>
-      </div>
     </el-dialog>
 
     <!--分类弹框-->
-    <el-dialog top="5vh" width="80%" title="分类编辑" :visible.sync="dialogFormVisibleClassesEdit">
-      <el-form :model="toDynamicTags1" :rules="rules1" ref="toDynamicTags1">
+    <el-dialog top="5vh" width="80%" title="分类编辑" :visible.sync="dialogFormVisibleClassesEdit" ref="showClasses">
+      <el-form status-icon :model="toDynamicTags1" :rules="rules1" ref="toDynamicTags1">
         <el-form-item label="排序" :label-width="formLabelWidth" prop="zIndex">
-          <el-input v-model="toDynamicTags1.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
+          <el-input v-model.number="toDynamicTags1.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" :label-width="formLabelWidth" style="text-align: left">
+          <el-select v-model="toDynamicTags1.status" placeholder="可用">
+            <el-option label="可用" value="enable"></el-option>
+            <el-option label="不可用" value="disable"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="分类介绍" :label-width="formLabelWidth">
           <el-input v-model="toDynamicTags1.description" auto-complete="off" placeholder="请输入数字"></el-input>
@@ -276,15 +260,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="餐厅id" :label-width="formLabelWidth" prop="rid">
-          <el-input v-model="toDynamicTags1.rid" auto-complete="off" placeholder="请输入数字"></el-input>
+          <el-input v-model.number="toDynamicTags1.rid" auto-complete="off" placeholder="请输入数字"></el-input>
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth" style="text-align: left">
-          <el-select v-model="toDynamicTags1.status" placeholder="可用">
-            <el-option label="可用" value="enable"></el-option>
-            <el-option label="不可用" value="disable"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item style="width: 40%" label="缩略图" :label-width="formLabelWidth">
+
+        <el-form-item style="width: 50%" label="缩略图" :label-width="formLabelWidth">
           <el-upload
             class="upload-demo"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -296,10 +275,9 @@
             <div slot="tip" class="el-upload__tip">只能上传png/jpg/gif文件</div>
           </el-upload>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="display: flex;justify-content: flex-end;">
             <el-button @click="dialogFormVisibleClassesEdit = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm1(toDynamicTags1)">确 定</el-button>
-            <el-button type="primary" circle @click="resetForm1('toDynamicTags1')" class="el-icon-refresh"></el-button>
+            <el-button type="primary" @click="submitForm('toDynamicTags1','showClasses')">确 定</el-button>
         </el-form-item>
       </el-form>
 
@@ -321,7 +299,7 @@
           <!--SKU内部标签-->
           <el-tag
             :key="tag.zIndex"
-            v-for="tag in dynamicTags3"
+            v-for="tag in toDynamicTags2.sku"
             closable
             :disable-transitions="false"
             @close="handleClose3(tag)"
@@ -357,9 +335,9 @@
 
     <!--SKU内部弹框-->
     <el-dialog width="80%" title="SKU编辑" :visible.sync="dialogFormVisibleInSKUEdit">
-      <el-form :model="toDynamicTags3">
+      <el-form :model="tosku">
         <el-form-item label="排序" :label-width="formLabelWidth">
-          <el-input v-model="toDynamicTags3.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
+          <el-input v-model="tosku.zIndex" auto-complete="off" placeholder="请输入数字"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -369,48 +347,96 @@
     </el-dialog>
 
     <!--添加菜品弹框-->
-    <el-dialog top="3vh" width="80%" title="增加菜品" :visible.sync="dialogFormVisibleGoodsPlus">
+    <el-dialog top="3vh" width="80%" title="增加菜品" :visible.sync="dialogFormVisibleGoodsPlus" ref="dishesShow">
       <div class="matter2">
         <span
           class="matter2-hint">该部分为必填
         </span>
-        <el-form :model="form" style="display: flex;">
-          <el-form-item style="flex-shrink: 0" label="品名" :label-width="formLabelWidth">
-            <el-input v-model="form.content" auto-complete="off" placeholder="请输入品名"></el-input>
-
+        <el-form :inline="true" :rules="rules2" ref="DynamicTags2" status-icon :model="dishes" :label-width="formLabelWidth">
+          <el-form-item label="品名" prop="name">
+            <el-input v-model="dishes.name" auto-complete="off" placeholder="请输入品名"></el-input>
           </el-form-item>
-          <el-form-item style="flex-shrink: 0" label="打印机" :label-width="formLabelWidth">
-            <el-select v-model="printValue" placeholder="请选择">
+          <el-form-item label="数量" prop="stock">
+            <el-input v-model.number="dishes.stock" auto-complete="off" placeholder="请输入数量"></el-input>
+          </el-form-item>
+          <el-form-item label="菜品类型" prop="cid">
+            <el-select v-model="dishes.cid" clearable placeholder="请选择，默认其他">
               <el-option
-                v-for="item in options1"
+                v-for="item in dynamicTags1"
+                :key="item.zIndex"
+                :label="item.name"
+                :value="item.zIndex">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="排序" prop="zIndex">
+            <el-input v-model.number="dishes.zIndex" auto-complete="off" placeholder="请输入序号"></el-input>
+          </el-form-item>
+          <el-form-item label="打印机" prop="pid">
+            <el-select v-model="dishes.pid" placeholder="请选择">
+              <el-option
+                v-for="item in dishes.printerOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item style="flex-shrink: 10" label="数量" :label-width="formLabelWidth">
-            <el-input v-model="form.number" auto-complete="off" placeholder="请输入数量"></el-input>
+          <el-form-item label="单位" prop="unit">
+            <el-select v-model="pushUnit" placeholder="请选择单位">
+              <el-option
+                v-for="item in dishes.unit"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-          </el-form-item>
         </el-form>
-        <el-form :model="form">
-          <el-form-item label="菜品介绍" :label-width="formLabelWidth">
-            <el-input v-model="form.goodsDescription" auto-complete="off" placeholder="请输入菜品介绍,50字以内"></el-input>
+
+        <el-form  :rules="rules2" ref="DynamicTags2" status-icon :model="dishes" :label-width="formLabelWidth">
+          <el-form-item label="菜品介绍" prop="description">
+            <el-input v-model="dishes.description" auto-complete="off" placeholder="请输入菜品介绍,50字以内"></el-input>
           </el-form-item>
-        </el-form>
+          <el-form-item label="展示类型" prop="showType">
+            <el-select v-model="pushShowType" placeholder="请选择时间段">
+              <el-option
+                v-for="item in dishes.showType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="pushShowType === 'sometimes'" label="时间段">
+            <el-time-picker
+              v-model="dishes.showTime.value1"
+              :picker-options="{
+                selectableRange: '18:30:00 - 20:30:00'
+              }"
+              placeholder="任意时间点">
+            </el-time-picker>
+            <el-col class="line" style="text-align: center; display: inline-block; float: none" :span="2">-</el-col>
+            <el-time-picker
+              arrow-control
+              v-model="dishes.showTime.value2"
+              :picker-options="{
+                selectableRange: '18:30:00 - 20:30:00'
+              }"
+              placeholder="任意时间点">
+            </el-time-picker>
+          </el-form-item>
 
         <!--菜品价格类型：标准价格、会员价格、活动价格-->
-        <el-form :model="form">
-          <el-form-item class="price-form" label="价格" :label-width="formLabelWidth">
+          <el-form-item class="price-form" label="价格" prop="price">
             <el-input
               size="small"
-              v-model="form.price"
+              v-model.number="dishes.price"
               auto-complete="off"
               placeholder="请输入价格"
               class="price-item"
             >
-
               <template slot="prepend">普通价</template>
             </el-input>
             <el-input
@@ -424,59 +450,61 @@
             </el-input>
             <el-input
               size="small"
-              v-model="PromotionPrice"
+              v-model="promotionPrice"
               auto-complete="off"
               placeholder="请输入价格"
               class="price-item"
             >
-              <template slot="prepend"><el-checkbox v-model="checked3"></el-checkbox>&nbsp;活动价{{PromotionDiscont}}</template>
+              <template slot="prepend"><el-checkbox v-model="checked3"></el-checkbox>&nbsp;活动价{{promotionDiscont}}</template>
             </el-input>
           </el-form-item>
-          <div style="display: flex; justify-content: space-around">
-            <el-form-item style="width: 30%;float: left" label="缩略图" :label-width="formLabelWidth">
-
+          <div style="display: flex;">
+            <el-form-item style="width: 20%;float: left" label="缩略图" prop="thumb">
               <el-upload
                 class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
-                :file-list="fileList2"
+                :file-list="dishes.thumb"
                 list-type="picture">
                 <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">请上传jpg/png文件，尺寸为70*70px
-                  &nbsp;——&nbsp;应用&nbsp;<el-checkbox v-model="checked1"></el-checkbox></div>
               </el-upload>
             </el-form-item>
-            <el-form-item style="width: 30%;float: left" label="Banner" :label-width="formLabelWidth">
-
+            <el-form-item style="width: 20%;float: left" label="高清图" prop="highDefinitionImg">
               <el-upload
                 class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
-                :file-list="fileList2"
+                :file-list="dishes.highDefinitionImg"
                 list-type="picture">
                 <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">请上传jpg/png文件，尺寸为1000*375px
-                  &nbsp;——&nbsp;应用&nbsp;<el-checkbox v-model="checked2"></el-checkbox></div>
               </el-upload>
             </el-form-item>
-            <el-form-item style="width: 30%;float: left" label="展示图" :label-width="formLabelWidth">
+            <el-form-item style="width: 20%;float: left" label="banner" prop="bannerImg">
               <el-upload
                 class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
-                :file-list="fileList2"
+                :file-list="dishes.bannerImg"
                 list-type="picture">
                 <el-button size="small" type="primary">点击上传 </el-button>
-                <div slot="tip" class="el-upload__tip">只能上传png文件，且不超过500kb
-                  &nbsp;——&nbsp;应用&nbsp;<el-checkbox v-model="checked3"></el-checkbox></div>
+              </el-upload>
+            </el-form-item>
+            <el-form-item style="width: 20%;float: left" label="推广图" prop="bannerStatus">
+              <el-upload
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :file-list="dishes.bannerStatus"
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传 </el-button>
               </el-upload>
             </el-form-item>
           </div>
         </el-form>
-
       </div>
 
       <!--菜品特性编辑-->
@@ -486,7 +514,7 @@
           class="matter2-hint">该部分为非必填，数据可在
           <el-button @click="toNature" type="primary" plain style="padding: 4px" size="mini" round>&nbsp;特性管理&nbsp;</el-button>编辑
         </span>
-        <el-form :model="form">
+        <el-form :model="dishes" status-icon :rules="rules2">
           <el-form-item label="添加标签" :label-width="formLabelWidth">
             <el-select style="display: inline-block; width: 555px" v-model="value6" multiple placeholder="请选择，默认无标签">
               <el-option
@@ -497,20 +525,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-        </el-form>
-        <el-form :model="form">
-          <el-form-item label="菜品类型" :label-width="formLabelWidth" style="text-align: left">
-            <el-select style="display: inline-block; width: 555px" v-model="value4" clearable placeholder="请选择，默认其他">
-              <el-option
-                v-for="item in dynamicTags1"
-                :key="item.zIndex"
-                :label="item.name"
-                :value="item.zIndex">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <el-form :model="form">
           <el-form-item label="添加SKU" :label-width="formLabelWidth">
             <el-select style="display: inline-block; width: 555px" v-model="value5" multiple placeholder="请选择，默认无SKU">
               <el-option
@@ -522,7 +536,6 @@
             </el-select>
             <el-button type="primary" :loading="true" @click="outputSku">生成SKU</el-button>
           </el-form-item>
-
         </el-form>
 
       </div>
@@ -532,7 +545,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleGoodsPlus = false" icon="el-icon-time">暂不上架</el-button>
         <el-button @click="dialogFormVisibleGoodsPlus = false">取 消</el-button>
-        <el-button type="primary" @click="plusGoods">立即上架</el-button>
+        <el-button type="primary" @click="submitForm('DynamicTags2','dishesShow')">立即上架</el-button>
       </div>
     </el-dialog>
 
@@ -544,139 +557,248 @@ import editcontrol from '@/components/editcontrol/editcontrol';
 const ERR_OK = 0
 export default {
   name: 'New',
-  data:() => ({
-    currentPage1:5,
-    dialogFormVisibleGoodsPlus:false,
-    dialogFormVisibleTagEdit: false,
-    dialogFormVisibleSKUEdit: false,
-    dialogFormVisibleClassesEdit: false,
-    dialogFormVisibleInSKUEdit: false,
-    activeName: 'first',
-    checked1: true,
-    checked2: false,
-    checked3: false,
-    goods:[],
-    loading: true,
-    formLabelWidth:'80px',
-    formLabelWidth1:'120px',
-    SKUinput:'',
-    memberDiscont: 0.8,
-    PromotionDiscont: 0.7,
-    colorFont: '#409EFF',
-    colorBg: '#409EFF',
-    form: {
-      name: '',
-      region: '',
-      date1: '',
-      date2: '',
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: '',
-      content:'',
-      goodsDescription:'',
-      price:0,
-      memberPrice: 0,
-      PromotionPrice: 0,
-      person:'',
-      number: 99
-    },
-    toDynamicTags:[],
-    dynamicTags: [
-      {
-        zIndex:'0',
-        name:'店长推荐',
-        price:'',
-        fontColor:'',
-        bgColor:'',
-        type:'',
-        fileList: [
-          {
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+  data(){
+    var checkZIndex = (rule, value, callback) => {
+          if(this.repeatZIndex === 2){
+            callback(new Error('存在相同序号，不可建立相同序号项'));
+          }else {
+            callback();
           }
-        ]
-      },
-    ],
-    inputVisible: false,
-    inputValue: '',
-    toDynamicTags1:[],
-    dynamicTags1: [
-      {
-        zIndex:'0',
-        name:'其他',
-        type:'',
+    };
+    return {
+      currentPage1:5,
+      dialogFormVisibleGoodsPlus:false,
+      dialogFormVisibleTagEdit: false,
+      dialogFormVisibleSKUEdit: false,
+      dialogFormVisibleClassesEdit: false,
+      dialogFormVisibleInSKUEdit: false,
+      activeName: 'first',
+      checked1: true,
+      checked2: false,
+      checked3: false,
+      goods:[],
+      loading: true,
+      formLabelWidth:'80px',
+      formLabelWidth1:'120px',
+      memberDiscont: 0.8,
+      promotionDiscont: 0.7,
+      colorFont: '#409EFF',
+      colorBg: '#409EFF',
+      dishes: {
+        zIndex: '',
+        name: '',
+        delivery: false,
+        description:'',
+        normalPrice: 0,
+        memberPrice: 0,
+        promotionPrice: 0,
+        stock: 99,
         pid: '',
-        rid: 0,
-        description: '',
-        status: '',
-        fileList: [
+        cid: '',
+        printerOptions: [
+          {
+            value: '选项1',
+            label: '默认端口1'
+          }, {
+            value: '选项2',
+            label: '端口2'
+          }, {
+            value: '选项3',
+            label: '端口3'
+          }
+        ],
+        showType: [
+          {
+            value: 'always',
+            label: '经常展示'
+          }, {
+            value: 'invisible',
+            label: '不展示'
+          }, {
+            value: 'sometimes',
+            label: '选择时间段展示'
+          }
+        ],
+        showTime: {
+          value1 : new Date(2016, 9, 10, 18, 40),
+          value2 : new Date(2016, 9, 10, 18, 40)
+        },
+        thumb: [
           {
             name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
           }
+        ],
+        highDefinitionImg: [
+          {
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ],
+        bannerImg: [
+          {
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ],
+        bannerStatus: [
+          {
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ],
+        unit: [
+          {
+            value: '1',
+            label: '份'
+          }, {
+            value: '2',
+            label: '碗'
+          }, {
+            value: '3',
+            label: '瓶'
+          }, {
+            value: '4',
+            label: '厅'
+          }, {
+            value: '5',
+            label: '锅'
+          }
+        ],
+
+      },
+      rules2: {
+        name: [
+          {required: true, message:'请输入品名', trigger:'blur'},
+        ],
+        stock: [
+          {required: true, message:'请输入库存', trigger:'blur'},
+          {type: 'number', required: true, message: '请输入数字', trigger: 'blur'}
+        ],
+        cid: [
+          {required: true, message:'请选择类别', trigger:'change'}
+        ],
+        zIndex: [
+          {required: true, message:'请输入序号', trigger:'blur'},
+          {type: 'number', required: true, message: '请输入数字', trigger: 'blur'}
+        ],
+        pid: [
+          {required: true, message:'请选择打印机', trigger:'change'}
+        ],
+        unit: [
+          {required: true, message:'请输入序号', trigger:'change'}
+        ],
+        description: [
+          {required: true, message:'请输入菜品描述', trigger:'blur'}
+        ],
+        showType: [
+          {required: true, message:'请选择展示类型', trigger:'change'}
+        ],
+        price: [
+          {required: true, message:'请输入价格', trigger:'blur'},
+          {type: 'number', required: true, message: '请输入数字', trigger: 'blur'}
+        ],
+        thumb: [
+          {required: true, message:'请上传一张图片', trigger:'change'}
         ]
       },
-    ],
-    rules1: {
-      zIndex : [
-        {required: true, message:'请输入序号', trigger:'blur'},
+      pushShowType: [],
+      pushUnit: [],
+      toDynamicTags:[],
+      dynamicTags: [
+        {
+          zIndex:'0',
+          name:'店长推荐',
+          status: '',
+          price:'',
+          type:''
+        },
       ],
-      rid : [
-        {required: true, message: '不能为空', trigger: 'blur'},
-        {type: 'number', required: true, message: '请输入数字', trigger: 'blur'},
-        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-            ],
+      rules: {
+        zIndex: [
+          {required: true, message:'请输入序号', trigger:'blur'},
+          {type: 'number', required: true, message: '请输入数字', trigger: 'blur'},
+          {validator: checkZIndex, trigger:'blur'}
+        ],
+      },
+      inputVisible: false,
+      inputValue: '',
+      toDynamicTags1:[],
+      dynamicTags1: [
+        {
+          zIndex:'0',
+          name:'其他',
+          type:'',
+          pid: '',
+          rid: 0,
+          description: '',
+          status: '',
+          fileList: [
+            {
+              name: 'food.jpeg',
+              url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+            }
+          ]
+        },
+      ],
+      rules1: {
+        zIndex : [
+          {required: true, message:'请输入序号', trigger:'blur'},
+          {type: 'number', required: true, message: '请输入数字', trigger: 'blur'}
+        ],
+        rid : [
+          {required: true, message: '不能为空', trigger: 'blur'},
+          {type: 'number', required: true, message: '请输入数字', trigger: 'blur'}
+        ],
+      },
+      inputVisible1: false,
+      inputValue1: '',
+      toDynamicTags2:[],
+      dynamicTags2: [
+        {
+          zIndex:'0',
+          name:'份量',
+          sku:[
+            {
+              zIndex:'0',
+              name:'大份',
+            },
+            {
+              zIndex:'1',
+              name:'中份',
+            },
+            {
+              zIndex:'2',
+              name:'小份',
+            },
+          ]
+        },
+      ],
+      inputVisible2: false,
+      inputValue2: '',
+      tosku:[],
 
-    },
-    inputVisible1: false,
-    inputValue1: '',
-    toDynamicTags2:[],
-    dynamicTags2: [
-      {
-        zIndex:'0',
-        name:'份量',
-      },
-    ],
-    inputVisible2: false,
-    inputValue2: '',
-    toDynamicTags3:[],
-    dynamicTags3: [
-      {
-        zIndex:'0',
-        name:'大份',
-      },
-      {
-        zIndex:'1',
-        name:'中份',
-      },
-      {
-        zIndex:'2',
-        name:'小份',
-      },
-    ],
-    inputVisible3: false,
-    inputValue3: '',
-    options1: [
-          {
-        value: '选项1',
-        label: '默认端口1'
-      }, {
-        value: '选项2',
-        label: '端口2'
-      }, {
-        value: '选项3',
-        label: '端口3'
-      }
-    ],
-    printValue:'选项1',
-    value4: '',
-    value5: '',
-    value6: '',
-    fileList2: [
-    ],
-  }),
+      inputVisible3: false,
+      inputValue3: '',
+      printValue:'选项1',
+      value4: '',
+      value5: '',
+      value6: '',
+      fileList2: [
+      ],
+    }
+  },
   computed:{
+    repeatZIndex: function(){
+      var n = 0;
+      let zIndex = this.toDynamicTags.zIndex
+      for(var i=0; i<this.dynamicTags.length; i++){
+        if(this.dynamicTags[i].zIndex === zIndex){
+          n++;
+        }
+      }
+      return n;
+    },
     listGoods(){
       let tempArr = [];
       this.goods.forEach((item)=>{
@@ -685,13 +807,14 @@ export default {
       return tempArr;
     },
     memberPrice: function(){
-      var memberPrice = parseInt(this.form.price)*this.memberDiscont
+      var memberPrice = parseInt(this.dishes.price)*this.memberDiscont
       return memberPrice.toFixed(2)
     },
-    PromotionPrice: function () {
-      var PromotionPrice = parseInt(this.form.price)*this.PromotionDiscont
-      return PromotionPrice.toFixed(2)
+    promotionPrice: function () {
+      var promotionPrice = parseInt(this.dishes.price)*this.promotionDiscont
+      return promotionPrice.toFixed(2)
     },
+
     repeatNum: function () {
       let inputValue = this.inputValue;
       for(var i=0; i<this.dynamicTags.length; i++){
@@ -705,7 +828,6 @@ export default {
       let inputValue = this.inputValue1;
       for(var i=0; i<this.dynamicTags1.length; i++){
         if(this.dynamicTags1[i].name === inputValue){
-
           return false;
         }
       }
@@ -714,20 +836,23 @@ export default {
       let inputValue = this.inputValue2;
       for(var i=0; i<this.dynamicTags2.length; i++){
         if(this.dynamicTags2[i].name === inputValue){
-
           return false;
         }
       }
     },
     repeatNum3: function () {
       let inputValue = this.inputValue3;
-      for(var i=0; i<this.dynamicTags3.length; i++){
-        if(this.dynamicTags3[i].name === inputValue){
-
+      if(!this.toDynamicTags2.sku){
+        return 0
+      }
+      for(var i=0; i<this.toDynamicTags2.sku.length; i++){
+        if(this.toDynamicTags2.sku[i].name === inputValue){
           return false;
         }
       }
     },
+
+
     lastNum: function () {
       for(var i=0; i<this.dynamicTags.length; i++){
         var lastNum = this.dynamicTags[i].zIndex
@@ -747,67 +872,31 @@ export default {
       return lastNum2;
     },
     lastNum3: function () {
-      for(var i=0; i<this.dynamicTags3.length; i++){
-        var lastNum3 = this.dynamicTags3[i].zIndex
+
+      if(!this.toDynamicTags2.sku){
+        return 0
       }
-      return lastNum3;
+      for(var i=0; i<this.toDynamicTags2.sku.length; i++){
+        var lastNum2 = this.toDynamicTags2.sku[i].zIndex
+      }
+      return lastNum2;
     }
   },
   methods: {
 
-    submitForm1() {
-      // console.log(formName);
-      // console.log(formName); //rulesForm
-      this.$refs['toDynamicTags1'].validate((valid) => {
+    submitForm(formName1,formName2) {
+      this.$refs[formName1].validate((valid) => {
         if (valid) {
-          alert('提交成功');
-        } else {
-          alert('内容没有填写完整');
+          this.$refs[formName2].visible = false
+          this.$message({
+            type: 'success',
+            message: '数据填写成功!'
+          })
+        }else{
+          alert('所填信息存在问题，请仔细检查，按照提示填写正确后再提交');
           return false;
         }
       });
-    },
-    resetForm1(formName) {
-      this.$refs[formName].resetFields();
-    },
-    handleRemove(file, fileList) {
-      // console.log(file, fileList);
-    },
-    toNature(){
-      this.dialogFormVisibleGoodsPlus = !this.dialogFormVisibleGoodsPlus
-      this.activeName = 'second'
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    plusMethodsThis(data){
-      // console.log(data);
-      this.dialogFormVisibleGoodsPlus = !this.dialogFormVisibleGoodsPlus
-    },
-    plusGoods(){
-      this.dialogFormVisibleGoodsPlus = !this.dialogFormVisibleGoodsPlus
-    },
-    formatter(row, column) {
-      return row.address;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
-    filterHandler(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
-    },
-    handleClick(tab, event) {
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-    },
-
-    outputSku(){
-      alert('1')
     },
 
     // 0
@@ -836,15 +925,8 @@ export default {
             zIndex: lastNum,
             name: inputValue,
             price: '',
-            fontColor:'',
-            bgColor:'',
-            type:'',
-            fileList: [
-              {
-                name: '',
-                url: ''
-              }
-            ]
+            status: '',
+            type:''
           }
         );}
       }
@@ -966,7 +1048,10 @@ export default {
           this.dynamicTags2.push(
             {
               zIndex: lastNum2,
-              name: inputValue2
+              name: inputValue2,
+              sku:[
+
+              ]
             }
           );
         }
@@ -1009,17 +1094,16 @@ export default {
       let inputValue3 = this.inputValue3;
       let repeatNum3  = this.repeatNum3
       let lastNum3 = this.lastNum3
-      console.log(lastNum3)
+      // console.log(lastNum3)
       if(!lastNum3){
         lastNum3 = -1;
       }
-      console.log(this.dynamicTags3);
       lastNum3 = parseInt(lastNum3) + 1
       if (inputValue3){
         if(repeatNum3 === false){
           alert('提示：同名项，不可建立')
         }else {
-          this.dynamicTags3.push(
+          this.toDynamicTags2.sku.push(
             {
               zIndex: lastNum3,
               name: inputValue3
@@ -1031,7 +1115,7 @@ export default {
       this.inputValue3 = '';
     },
     tagContent3(tag){
-      this.toDynamicTags3 = tag
+      this.tosku = tag
       // console.log(tag);
       this.dialogFormVisibleInSKUEdit = !this.dialogFormVisibleInSKUEdit
     },
@@ -1041,7 +1125,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.dynamicTags3.splice(this.dynamicTags3.indexOf(tag), 1);
+        this.toDynamicTags2.sku.splice(this.toDynamicTags2.sku.indexOf(tag), 1);
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -1052,7 +1136,47 @@ export default {
           message: '已取消删除'
         });
       });
-    }
+    },
+    handleRemove(file, fileList) {
+      // console.log(file, fileList);
+    },
+    toNature(){
+      this.dialogFormVisibleGoodsPlus = !this.dialogFormVisibleGoodsPlus
+      this.activeName = 'second'
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    plusMethodsThis(data){
+      // console.log(data);
+      this.dialogFormVisibleGoodsPlus = !this.dialogFormVisibleGoodsPlus
+    },
+    plusGoods(){
+      console.log(this.pushShowType)
+      this.dialogFormVisibleGoodsPlus = !this.dialogFormVisibleGoodsPlus
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
+    handleClick(tab, event) {
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+
+    outputSku(){
+      alert('1')
+    },
   },
 
   created() {
